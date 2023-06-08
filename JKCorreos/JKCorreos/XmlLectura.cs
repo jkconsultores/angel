@@ -15,8 +15,10 @@ namespace JKCorreos
             var correoService = new CorreoService();
             correoService.ProcesarCorreos();
 
+
             int timeDelay = _timeDelay;
             string filePath = @"D:\JK Empresa\DescargaXML\20100082803-09-T020-00000059.xml";
+
             Console.WriteLine("file " + filePath);
             LeerXml(filePath);
             await Task.Delay(timeDelay, stoppingToken);
@@ -108,7 +110,6 @@ namespace JKCorreos
 
         private void GuardarCabeceraGuia(GuiaElectronica guiaElectronica)
         {
-
             // Conexión Base de datos
             SqlConnectionStringBuilder connectionStringBuilder = new();                      
             string connectionString = "Data Source=DESKTOP-D7VGCJ9;Initial Catalog=JKCORREO;Integrated Security=True";
