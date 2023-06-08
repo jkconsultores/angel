@@ -1,9 +1,5 @@
-﻿using Cake.Core.IO;
-using JKCorreos.Modelos;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿using JKCorreos.Modelos;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Xml;
 using System.Xml.Serialization;
@@ -15,8 +11,12 @@ namespace JKCorreos
         private readonly int _timeDelay = 10;
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            // Crear una instancia del servicio y procesar los correos
+            var correoService = new CorreoService();
+            correoService.ProcesarCorreos();
+
             int timeDelay = _timeDelay;
-            string filePath = @"D:\JK Empresa\LeerXml\00000020100082803-09-T020-00000059.xml";
+            string filePath = @"D:\JK Empresa\DescargaXML\20100082803-09-T020-00000059.xml";
             Console.WriteLine("file " + filePath);
             LeerXml(filePath);
             await Task.Delay(timeDelay, stoppingToken);
@@ -84,11 +84,13 @@ namespace JKCorreos
             GuardarCabeceraGuia(guiaElectronica);
 
             //Lectura y guarda el Detalle de la Guia
-            DetalleGuia detalleguia = new DetalleGuia();
+            
             List<DetalleGuia> detallesDispatch = new List<DetalleGuia>();
             
             foreach (DespatchLine listaDetalle in ArchivoXml.DespatchLines)
             {
+                DetalleGuia detalleguia = new DetalleGuia();
+                detalleguia.NumeroDocumentoRemitente = ArchivoXml.ID;
                 detalleguia.Item = listaDetalle.ID;
                 detalleguia.Codigo = listaDetalle.Item.SellersItemIdentification.ID;
                 detalleguia.Descripcion = listaDetalle.Item.Description;
@@ -96,10 +98,10 @@ namespace JKCorreos
                 detalleguia.Cantidad = listaDetalle.DeliveredQuantity.Value;
                 detallesDispatch.Add(detalleguia);
             }
-            detalleguia.NumeroDocumentoRemitente = ArchivoXml.ID;
-            foreach (DetalleGuia detallesGuiaCompleto in detallesDispatch)
+            
+            foreach (DetalleGuia DetalleGuiaCompleto in detallesDispatch)
             {
-                GuardarDetalleGuia(detalleguia);
+                GuardarDetalleGuia(DetalleGuiaCompleto);
             }  
 
         }                
