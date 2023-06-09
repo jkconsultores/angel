@@ -45,44 +45,70 @@ namespace JKCorreos
 
             //Guarda los tags en guiaElectronica
             GuiaElectronica guiaElectronica = new GuiaElectronica();
-            guiaElectronica.NumeroDocumentoRemitente = ArchivoXml.ID;
-            guiaElectronica.TipoDocumentoRemitente = ArchivoXml.DespatchAdviceTypeCode.Value;
-            guiaElectronica.RazonSocialRemitente = ArchivoXml.DeliveryCustomerParty.Party.PartyLegalEntity.RegistrationName;
-            guiaElectronica.RucEmisor = ArchivoXml.Signature.SignatoryParty.PartyIdentification.ID;
-            guiaElectronica.FechaEmision = ArchivoXml.IssueDate;
-            guiaElectronica.HoraEmision = ArchivoXml.IssueTime;
-            guiaElectronica.RazonSocialDestinatario = ArchivoXml.Shipment.ShipmentStage.CarrierParty.PartyLegalEntity.RegistrationName;
-            guiaElectronica.RucDestinatario = ArchivoXml.Shipment.ShipmentStage.CarrierParty.PartyIdentification.ID;
-            guiaElectronica.MotivoGuia = ArchivoXml.Shipment.HandlingInstructions;
-            guiaElectronica.PesoBruto = ArchivoXml.Shipment.GrossWeightMeasure.Value;
-            guiaElectronica.DireccionPtoPartida = ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.AddressLine.Line;
-            guiaElectronica.DireccionPtoLlegada = ArchivoXml.Shipment.Delivery.DeliveryAddress.AddressLine.Line;
-            guiaElectronica.FechaEntregaBienes = ArchivoXml.Shipment.ShipmentStage.TransitPeriod.StartDate;
-            guiaElectronica.CodigoCliente = ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation .AdditionalProperties[4].Value;
-            guiaElectronica.NumeroPedido = ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[0].Value;
-            guiaElectronica.OrdenCompra = ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[3].Value;
-            guiaElectronica.NombreVendedor = ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[2].Value;
-            guiaElectronica.CondicionPago = ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[1].Value;
+            guiaElectronica.NumeroDocumentoRemitente =  ArchivoXml.Signature.SignatoryParty.PartyIdentification.ID;
+            guiaElectronica.TipoDocumentoRemitente =    ArchivoXml.DespatchSupplierParty.Party.PartyIdentification.SchemeID;
+            guiaElectronica.RazonSocialRemitente =      ArchivoXml.DeliveryCustomerParty.Party.PartyLegalEntity.RegistrationName;
+            guiaElectronica.SerieNumeroGuia =           ArchivoXml.ID;
+            guiaElectronica.TipoDocumentoGuia =         ArchivoXml.DespatchAdviceTypeCode.Value;
+            guiaElectronica.FechaEmision =              ArchivoXml.IssueDate;
+            guiaElectronica.HoraEmision =               ArchivoXml.IssueTime;
+            guiaElectronica.RazonSocialDestinatario =   ArchivoXml.Shipment.ShipmentStage.CarrierParty.PartyLegalEntity.RegistrationName;
+            guiaElectronica.NumeroDocumentoDestinatario=ArchivoXml.Shipment.ShipmentStage.CarrierParty.PartyIdentification.ID;
+            guiaElectronica.MotivoGuia =                ArchivoXml.Shipment.HandlingCode.Value;
+            guiaElectronica.DescripcionMotivo =         ArchivoXml.Shipment.HandlingInstructions;
+            guiaElectronica.PesoBruto =                 ArchivoXml.Shipment.GrossWeightMeasure.Value;
+            guiaElectronica.UnidadMedidaPeso =          ArchivoXml.Shipment.GrossWeightMeasure.UnitCode;            
+            guiaElectronica.FechaEntregaBienes =        ArchivoXml.Shipment.ShipmentStage.TransitPeriod.StartDate;
+            guiaElectronica.NumeroBultos =              ArchivoXml.Shipment.TotalTransportHandlingUnitQuantity;
+            guiaElectronica.UbigeoPtoPartida =          ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.ID;
+            guiaElectronica.CodigoPtoPartida =          ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.AddressTypeCode.Value;
+            guiaElectronica.DireccionPtoPartida =       ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.AddressLine.Line;
+            guiaElectronica.NumeroDocumentoPartida =    ArchivoXml.ID;
+            guiaElectronica.UbigeoPtoLLegada =          ArchivoXml.Shipment.Delivery.DeliveryAddress.ID;
+            guiaElectronica.CodigoPtoLLegada =          ArchivoXml.Shipment.Delivery.DeliveryAddress.AddressTypeCode.Value;
+            guiaElectronica.DireccionPtoLLegada =       ArchivoXml.Shipment.Delivery.DeliveryAddress.AddressLine.Line;
+            guiaElectronica.NumeroDocumentoLlegada =    ArchivoXml.ID;
+
+            guiaElectronica.CodigoCliente =             ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[4].Value;
+            guiaElectronica.NumeroPedido =              ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[0].Value;
+            guiaElectronica.OrdenCompra =               ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[3].Value;
+            guiaElectronica.NombreVendedor =            ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[2].Value;
+            guiaElectronica.CondicionPago =             ArchivoXml.UBLExtensions.UBLExtension[0].ExtensionContent.AdditionalInformation.AdditionalProperties[1].Value;
 
             //Lectura de Tags
-            Console.WriteLine("NUMERODOCUMENTOREMITENTE  : " + guiaElectronica.NumeroDocumentoRemitente);            
+            Console.WriteLine("------LECTURA DE DATOS XML:--------" );
+            Console.WriteLine("NUMERODOCUMENTOREMITENTE :"+ guiaElectronica.NumeroDocumentoRemitente);            
             Console.WriteLine("TipoDocumentoRemitente : " + guiaElectronica.TipoDocumentoRemitente);
             Console.WriteLine("RazonSocialRemitente : " +   guiaElectronica.RazonSocialRemitente);
-            Console.WriteLine("RucEmisor : " +              guiaElectronica.RucEmisor);
+            Console.WriteLine("SerieNumeroGuia : " +        guiaElectronica.SerieNumeroGuia);
+            Console.WriteLine("TIPODOCUMENTOGUIA : " +      guiaElectronica.TipoDocumentoGuia);
             Console.WriteLine("FechaEmision : " +           guiaElectronica.FechaEmision);
             Console.WriteLine("HoraEmision  : " +           guiaElectronica.HoraEmision);
             Console.WriteLine("RazonSocialDestinatario : " +guiaElectronica.RazonSocialDestinatario);
-            Console.WriteLine("RucDestinatario : " +        guiaElectronica.RucDestinatario);
+            Console.WriteLine("NUMERODOCUMENTODESTINATARIO"+guiaElectronica.NumeroDocumentoDestinatario);
             Console.WriteLine("MotivoGuia : " +             guiaElectronica.MotivoGuia);
+            Console.WriteLine("DescripcionMotivo : " +      guiaElectronica.DescripcionMotivo);
             Console.WriteLine("PesoBruto : " +              guiaElectronica.PesoBruto);
-            Console.WriteLine("DireccionPtoPartida : " +    guiaElectronica.DireccionPtoPartida);
-            Console.WriteLine("DireccionPtoLlegada : " +    guiaElectronica.DireccionPtoLlegada);
+            Console.WriteLine("UnidadMedidaPeso : " +       guiaElectronica.UnidadMedidaPeso);
             Console.WriteLine("FechaEntregaBienes : " +     guiaElectronica.FechaEntregaBienes);
+            Console.WriteLine("NumeroBultos : " +           guiaElectronica.NumeroBultos);
+            Console.WriteLine("UbigeoPtoPartida : " + guiaElectronica.UbigeoPtoPartida);
+            Console.WriteLine("CodigoPtoPartida : " + guiaElectronica.CodigoPtoPartida);
+            Console.WriteLine("DireccionPtoPartida : " + guiaElectronica.DireccionPtoPartida);
+            Console.WriteLine("NumeroDocumentoPartida : " + guiaElectronica.NumeroDocumentoPartida);
+            Console.WriteLine("UbigeoPtoLLegada : " + guiaElectronica.UbigeoPtoLLegada);
+            Console.WriteLine("CodigoPtoLLegada : " + guiaElectronica.CodigoPtoLLegada);
+            Console.WriteLine("DireccionPtoLlegada : " + guiaElectronica.DireccionPtoLlegada);
+            Console.WriteLine("NumeroDocumentoLlegada : " + guiaElectronica.NumeroDocumentoLlegada);
+
+
+
             Console.WriteLine("CodigoCliente : " +          guiaElectronica.CodigoCliente);
             Console.WriteLine("NumeroPedido : " +           guiaElectronica.NumeroPedido);
             Console.WriteLine("OrdenCompra : " +            guiaElectronica.OrdenCompra);
             Console.WriteLine("NombreVendedor : " +         guiaElectronica.NombreVendedor);
-            Console.WriteLine("CondicionPago : " +          guiaElectronica.CondicionPago);
+            Console.WriteLine("CondicionPago : " + guiaElectronica.CondicionPago);
+
             GuardarCabeceraGuia(guiaElectronica);
 
             //Lectura y guarda el Detalle de la Guia
@@ -130,7 +156,7 @@ namespace JKCorreos
                 command.Parameters.AddWithValue("@FECHAEMISION",             guiaElectronica.FechaEmision);
                 command.Parameters.AddWithValue("@HORAEMISION",              guiaElectronica.HoraEmision);
                 command.Parameters.AddWithValue("@RAZONSOCIALDESTINATARIO",  guiaElectronica.RazonSocialDestinatario);
-                command.Parameters.AddWithValue("@RUCDESTINATARIO",          guiaElectronica.RucDestinatario);
+                command.Parameters.AddWithValue("@RUCDESTINATARIO",          guiaElectronica.NumeroDocumentoDestinatario);
                 command.Parameters.AddWithValue("@MOTIVOGUIA",               guiaElectronica.MotivoGuia);
                 command.Parameters.AddWithValue("@PESOBRUTO",                guiaElectronica.PesoBruto);
                 command.Parameters.AddWithValue("@DIRECCIONPTOPARTIDA",      guiaElectronica.DireccionPtoPartida);

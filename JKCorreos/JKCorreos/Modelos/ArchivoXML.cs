@@ -107,12 +107,6 @@ namespace JKCorreos.Modelos
         public PartyIdentification PartyIdentification { get; set; }
     }
 
-    //public class PartyIdentification
-    //{
-    //    [XmlElement(ElementName = "ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
-    //    public string ID { get; set; }
-    //}
-
     public class DigitalSignatureAttachment
     {
         [XmlElement(ElementName = "ExternalReference", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
@@ -271,16 +265,16 @@ namespace JKCorreos.Modelos
         [XmlElement(ElementName = "ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string ID { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeAgencyName")]
+        [XmlAttribute(AttributeName = "schemeAgencyName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeAgencyName { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeID")]
+        [XmlAttribute(AttributeName = "schemeID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeID { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeName")]
+        [XmlAttribute(AttributeName = "schemeName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeName { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeURI")]
+        [XmlAttribute(AttributeName = "schemeURI", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeURI { get; set; }
     }
 
@@ -362,16 +356,6 @@ namespace JKCorreos.Modelos
         public AddressLine AddressLine { get; set; }
     }
 
-
-
-    /// <summary>
-    /// /
-    /// </summary>
-    //public class ShipmentStage
-    //{
-    //    [XmlElement(ElementName = "TransportMeans", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
-    //    public TransportMeans TransportMeans { get; set; }
-    //}
 
     public class TransportMeans
     {
