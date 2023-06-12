@@ -6,18 +6,25 @@ using MailKit.Search;
 using MailKit.Security;
 using MimeKit;
 using System.IO.Compression;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+
 
 public class CorreoService
 {
 
     private readonly string _correo = "xml@jkconsultores.com";
     private readonly string _contraseña = "ihsiCm&H~#T&";
+
     //Cambiar la ruta si es necesario
 
     //Ruta para los xml que serán leídos
-    private readonly string _carpetaDestino = @"D:\JK Empresa\DescargaXML";
+    private readonly string _carpetaDestino = @"C:\Users\cesar\OneDrive\Documentos\Proyectos\C#\JkSmartData";
     //Ruta para los archivos restantes
-    private readonly string _carpetaRegistro = @"D:\JK Empresa\DescargaXML\Otros";  
+    private readonly string _carpetaRegistro = @"C:\Users\cesar\OneDrive\Documentos\Proyectos\C#\JkSmartData\OTROS";
+    
+    private readonly string _connectionString = "Data Source=CESAR;Initial Catalog=JK_pruebas;Integrated Security=True";
+
 
     public void ProcesarCorreos()
     {
@@ -26,13 +33,24 @@ public class CorreoService
             clienteImap.Connect("mail.jkconsultores.com", 993, SecureSocketOptions.SslOnConnect);
             clienteImap.Authenticate(_correo, _contraseña);
 
-            clienteImap.Inbox.Open(FolderAccess.ReadOnly);
+            clienteImap.Inbox.Open(FolderAccess.ReadWrite);
+            //var mensajesNoLeidos = clienteImap.Inbox.Search(SearchQuery.NotSeen);
 
             var mensajes = clienteImap.Inbox.Search(SearchQuery.All);
-
+            
+            //cambiar por (mensajesNoLeidos) en el caso de que no se quiera agregar dos veces los datos
             foreach (var uid in mensajes)
             {
+
                 var mensaje = clienteImap.Inbox.GetMessage(uid);
+
+                DateTimeOffset fechaRecepcionOffset = mensaje.Date;
+                DateTime fechaRecepcion = fechaRecepcionOffset.UtcDateTime;
+
+           
+   
+                var remitente = mensaje.From.ToString();
+                var destinatario = mensaje.To.ToString();
 
                 foreach (var adjunto in mensaje.Attachments)
                 {
@@ -115,7 +133,11 @@ public class CorreoService
 
                     }
 
+                    // Insertar datos en la base de datos
+                    InsertarEnBaseDeDatos(fechaRecepcion, remitente, destinatario, mensaje.Attachments);
 
+                    // Marcar correo como leído
+                    clienteImap.Inbox.SetFlags(uid, MessageFlags.Seen, true);
                 }
             }
 
@@ -124,5 +146,41 @@ public class CorreoService
         Console.WriteLine("Extracción de archivos completada.");
     }
 
+    private void InsertarEnBaseDeDatos(DateTime fechaRecepcion, string remitente, string destinatario, IEnumerable<MimeEntity> adjuntos)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            foreach (var adjunto in adjuntos)
+            {
+                if (adjunto is MimePart parte)
+                {
+                    // Obtener la información necesaria del adjunto
+                    var tipoArchivo = Path.GetExtension(parte.FileName)?.ToLower();
+                    var rutaDescarga = Path.Combine(_carpetaDestino, parte.FileName);
+
+                    // Insertar datos en la tabla RECEPCIONCORREOS
+                    var sql = @"INSERT INTO RECEPCION_CORREOS (FECHARECEPCION, FECHACORREO, REMITENTE, DESTINATARIO, XMLADJUNTO, PDFADJUNTO, CDRADJUNTO, OTROSARCHIVOS, RUTADESCARGA)
+                                VALUES (@FechaRecepcion, @FechaCorreo, @Remitente, @Destinatario, @XmlAdjunto, @PdfAdjunto, @CdrAdjunto, @OtrosArchivos, @RutaDescarga)";
+
+                    using (var command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@FechaRecepcion", fechaRecepcion);
+                        command.Parameters.AddWithValue("@FechaCorreo", fechaRecepcion);
+                        command.Parameters.AddWithValue("@Remitente", remitente);
+                        command.Parameters.AddWithValue("@Destinatario", destinatario);
+                        command.Parameters.AddWithValue("@XmlAdjunto", tipoArchivo == ".xml" ? parte.FileName : DBNull.Value);
+                        command.Parameters.AddWithValue("@PdfAdjunto", tipoArchivo == ".pdf" ? parte.FileName : DBNull.Value);
+                        command.Parameters.AddWithValue("@CdrAdjunto", tipoArchivo == ".cdr" ? parte.FileName : DBNull.Value);
+                        command.Parameters.AddWithValue("@OtrosArchivos", tipoArchivo != ".xml" && tipoArchivo != ".pdf" && tipoArchivo != ".cdr" ? parte.FileName : DBNull.Value);
+                        command.Parameters.AddWithValue("@RutaDescarga", rutaDescarga);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+    }
 
 }
