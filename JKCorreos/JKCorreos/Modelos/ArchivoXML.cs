@@ -107,12 +107,6 @@ namespace JKCorreos.Modelos
         public PartyIdentification PartyIdentification { get; set; }
     }
 
-    //public class PartyIdentification
-    //{
-    //    [XmlElement(ElementName = "ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
-    //    public string ID { get; set; }
-    //}
-
     public class DigitalSignatureAttachment
     {
         [XmlElement(ElementName = "ExternalReference", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
@@ -161,12 +155,6 @@ namespace JKCorreos.Modelos
         public string ID { get; set; }
     }
 
-    //public class PartyLegalEntity
-    //{
-    //    [XmlElement(ElementName = "RegistrationName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
-    //    public string RegistrationName { get; set; }
-    //}
-
     public class DeliveryCustomerParty
     {
         [XmlElement(ElementName = "Party", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
@@ -196,6 +184,9 @@ namespace JKCorreos.Modelos
         [XmlElement(ElementName = "Delivery", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
         public Delivery Delivery { get; set; }
 
+        [XmlElement("TransportHandlingUnit", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
+        public TransportHandlingUnitModel TransportHandlingUnit { get; set; }
+
     }
 
     public class HandlingCode
@@ -212,8 +203,6 @@ namespace JKCorreos.Modelos
         [XmlText]
         public string Value { get; set; }
     }
-
-    ///
 
     public class GrossWeightMeasure
     {
@@ -233,7 +222,7 @@ namespace JKCorreos.Modelos
         public TransitPeriod TransitPeriod { get; set; }
 
         [XmlElement(ElementName = "CarrierParty", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
-        public CarrierParty CarrierParty { get; set; }
+        public CarrierParty CarrierParty { get; set; } }
     }
 
     public class TransportModeCode
@@ -266,24 +255,78 @@ namespace JKCorreos.Modelos
         public PartyLegalEntity PartyLegalEntity { get; set; }
     }
 
+    public class DriverPersonModel
+    {
+        [XmlElement("ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public IDModel ID { get; set; }
+
+        [XmlElement("FirstName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public string FirstName { get; set; }
+
+        [XmlElement("FamilyName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public string FamilyName { get; set; }
+
+        [XmlElement("JobTitle", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public string JobTitle { get; set; }
+
+        [XmlElement("IdentityDocumentReference", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
+        public IdentityDocumentReferenceModel IdentityDocumentReference { get; set; }
+    }
+
+    public class IDModel
+    {
+        [XmlAttribute("schemeAgencyName")]
+        public string SchemeAgencyName { get; set; }
+
+        [XmlAttribute("schemeID")]
+        public string SchemeID { get; set; }
+
+        [XmlAttribute("schemeName")]
+        public string SchemeName { get; set; }
+
+        [XmlAttribute("schemeURI")]
+        public string SchemeURI { get; set; }
+
+        [XmlText]
+        public string Value { get; set; }
+    }
+
+    public class IdentityDocumentReferenceModel
+    {
+        [XmlElement("ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public string ID { get; set; }
+    }
+
+    public class TransportHandlingUnitModel
+    {
+        [XmlElement("TransportEquipment", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
+        public TransportEquipmentModel TransportEquipment { get; set; }
+    }
+
+    public class TransportEquipmentModel
+    {
+        [XmlElement("ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
+        public string ID { get; set; }
+    }
+
     public class PartyIdentification
     {
         [XmlElement(ElementName = "ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string ID { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeAgencyName")]
+        [XmlAttribute(AttributeName = "schemeAgencyName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeAgencyName { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeID")]
+        [XmlAttribute(AttributeName = "schemeID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeID { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeName")]
+        [XmlAttribute(AttributeName = "schemeName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeName { get; set; }
 
-        [XmlAttribute(AttributeName = "schemeURI")]
+        [XmlAttribute(AttributeName = "schemeURI", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string SchemeURI { get; set; }
     }
-
+    
     public class PartyLegalEntity
     {
         [XmlElement(ElementName = "RegistrationName", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
@@ -362,17 +405,6 @@ namespace JKCorreos.Modelos
         public AddressLine AddressLine { get; set; }
     }
 
-
-
-    /// <summary>
-    /// /
-    /// </summary>
-    //public class ShipmentStage
-    //{
-    //    [XmlElement(ElementName = "TransportMeans", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
-    //    public TransportMeans TransportMeans { get; set; }
-    //}
-
     public class TransportMeans
     {
         [XmlElement(ElementName = "RoadTransport", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")]
@@ -384,7 +416,6 @@ namespace JKCorreos.Modelos
         [XmlElement(ElementName = "LicensePlateID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string LicensePlateID { get; set; }
     }
-
 
     public class DespatchLine
     {
@@ -436,4 +467,4 @@ namespace JKCorreos.Modelos
         [XmlElement(ElementName = "ID", Namespace = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2")]
         public string ID { get; set; }
     }
-}
+
