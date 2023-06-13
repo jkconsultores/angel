@@ -45,11 +45,11 @@ namespace JKCorreos
             namespaceTrans.AddNamespace("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
             namespaceTrans.AddNamespace("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
             XmlNode schemeIDValorTransp = xmlDoc.SelectSingleNode("//cac:PartyIdentification/cbc:ID/@schemeID", namespaceTrans);
-            string schemeIDTransporte = schemeIDValorTransp.Value;            
+            string schemeIDTransporte = schemeIDValorTransp.Value;
 
             StringWriter sw = new StringWriter();
             XmlTextWriter tx = new XmlTextWriter(sw);
-            xmlDoc.WriteTo(tx);            
+            xmlDoc.WriteTo(tx);
 
             XmlSerializer serializer = new XmlSerializer(typeof(DespatchAdvice));
             DespatchAdvice? ArchivoXml = null;
@@ -93,14 +93,14 @@ namespace JKCorreos
             guiaElectronica.UbigeoPtoPartida =          ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.ID;
             guiaElectronica.CodigoPtoPartida =          ArchivoXml.Shipment.Delivery.Despatch?.DespatchAddress?.AddressTypeCode?.Value ?? "";                     
             guiaElectronica.DireccionPtoPartida =       ArchivoXml.Shipment.Delivery.Despatch.DespatchAddress.AddressLine.Line;
-            guiaElectronica.NumeroDocumentoPartida =    ArchivoXml.Shipment.Delivery.Despatch?.DespatchAddress?.AddressTypeCode?.ListID ?? "";                        
+            guiaElectronica.NumeroDocumentoPartida =    ArchivoXml.Shipment.Delivery.Despatch?.DespatchAddress?.AddressTypeCode?.ListID ?? "";         
             guiaElectronica.UbigeoPtoLLegada =          ArchivoXml.Shipment.Delivery.DeliveryAddress.ID;
-            guiaElectronica.CodigoPtoLLegada =          ArchivoXml.Shipment.Delivery.DeliveryAddress?.AddressTypeCode?.Value ?? "";               
+            guiaElectronica.CodigoPtoLLegada =          ArchivoXml.Shipment.Delivery.DeliveryAddress?.AddressTypeCode?.Value ?? "";
             guiaElectronica.DireccionPtoLlegada =       ArchivoXml.Shipment.Delivery.DeliveryAddress?.AddressLine?.Line ?? "";
             guiaElectronica.NumeroDocumentoPtoLlegada = ArchivoXml.Shipment.Delivery.DeliveryAddress?.AddressTypeCode?.ListID ?? "";                       
             guiaElectronica.RazonSocialTransportista =  ArchivoXml.Shipment.ShipmentStage.CarrierParty?.PartyLegalEntity?.RegistrationName ?? "";
             guiaElectronica.NumeroRucTransportista =    ArchivoXml.Shipment.ShipmentStage.CarrierParty?.PartyIdentification?.ID ?? "";
-            guiaElectronica.TipoDocumentoTransportista =schemeIDTransporte;                 
+            guiaElectronica.TipoDocumentoTransportista =schemeIDTransporte;
             guiaElectronica.CodigoPuerto =              "";
             guiaElectronica.CodigoAeropuerto =          "";
             guiaElectronica.DescripcionPuerto =         "";
@@ -230,7 +230,6 @@ namespace JKCorreos
                 command.Parameters.AddWithValue("@CodigoPuerto",                guiaElectronica.CodigoPuerto);
                 command.Parameters.AddWithValue("@CodigoAeropuerto",            guiaElectronica.CodigoAeropuerto);
                 command.Parameters.AddWithValue("@DescripcionPuerto",           guiaElectronica.DescripcionPuerto);
-
                 command.Parameters.AddWithValue("@Estado",                      guiaElectronica.Estado);
                 command.Parameters.AddWithValue("@SerieNumeroTransporte",       guiaElectronica.SerieNumeroTransporte);
                 command.Parameters.AddWithValue("@FechaRecepcion",              guiaElectronica.FechaRecepcion);
@@ -264,8 +263,7 @@ namespace JKCorreos
                 command.Parameters.AddWithValue("@CODIGO",                   detalleguia.Codigo);
                 command.Parameters.AddWithValue("@DESCRIPCION" ,             detalleguia.Descripcion);
                 command.Parameters.AddWithValue("@UNIDAD",                   detalleguia.Unidad);
-                command.Parameters.AddWithValue("@CANTIDAD",                 detalleguia.Cantidad);
-                                 
+                command.Parameters.AddWithValue("@CANTIDAD",                 detalleguia.Cantidad);                                 
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
                 Console.WriteLine("Se guardo detalleguia en BD");
